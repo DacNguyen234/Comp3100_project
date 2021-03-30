@@ -27,11 +27,19 @@ class stage1{
         dout.flush();
         System.out.println("Client has send " + str + " to sever"); 
 
-        //recieved welcome message
+        //recieved welcome message "OK"
         byteArray = new byte[din.available()];
         din.read(byteArray);
         str = new String(byteArray,StandardCharsets.UTF_8);
         System.out.println(str);
+
+        //read from sever
+        str = "REDY";
+        dout.write(str.getBytes());
+        dout.flush();
+        System.out.println("Client has send " + str + " to sever"); 
+
+        
 
         dout.close();  
         s.close();  
