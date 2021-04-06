@@ -5,9 +5,6 @@ import java.io.*;
 
 
 public class MyCientScheduleJob {
-    public static String HELO = "HELO";
-    public static String AUTH = "AUTH user";
-    public static String REDY = "REDY";
     public static String QUIT = "QUIT";
     public static char[] HI = {'H', 'E','L', 'O'};
     public int coreCount = -1;
@@ -33,43 +30,43 @@ public class MyCientScheduleJob {
 
             MyCientScheduleJob csj = new MyCientScheduleJob();
 
-            bout.write(HELO.getBytes());
-            System.out.println("Sent HELO to the server");
+	    //Send HELO and reponse
+            bout.write("HELO".getBytes());
             bout.flush();
-
             String serverReply = csj.readMsg(new byte[32], bin);
             System.out.println("Received in response to HELO: " + serverReply);
 
-            bout.write(AUTH.getBytes());
+	    //Send AUTH and reponse
+            bout.write("AUTH GROUP20".getBytes());
             bout.flush();
-
             serverReply = csj.readMsg(new byte[32], bin);
             System.out.println("Received in response to AUTH: " + serverReply);
 
-            bout.write(REDY.getBytes());
+	    //Send REDY and reponse
+            bout.write("REDY".getBytes());
             bout.flush();
-
             serverReply = csj.readMsg(new byte[32], bin);
             System.out.println("Received in response to REDY: " + serverReply);
 
+	    //Send GETSALL and reponse
             bout.write("GETS All".getBytes());
             bout.flush();
-
             serverReply = csj.readMsg(new byte[32], bin);
-            System.out.println("Received in response to HELO: " +serverReply);
+            System.out.println("Received in response to GETS ALL: " +serverReply);
 
             bout.write("OK".getBytes());
             bout.flush();
 
+	    //get size
             String[] message_space = serverReply.split(" ");
-            serverReply = csj.readMsg(new byte[Integer.parseInt(message_space[1])*Integer.parseInt(message_space[1])], bin);
-
+            serverReply = csj.readMsg(new byte[Integer.parseInt(message_space[1])*Integer.parseInt(message_space[2])], bin);
+	    /*
             String[] arrOfStr = serverReply.split("\n");
-
-            for(String server: arrOfStr) {
+            for(String server: arrOfStr) {  //missing
                 String[] indiServer = server.split(" ");
-
             }
+            
+	    //Send OK and reponse
             bout.write("OK".getBytes());
             bout.flush();
             serverReply = csj.readMsg(new  byte[1], bin);
@@ -80,7 +77,7 @@ public class MyCientScheduleJob {
 
             serverReply = csj.readMsg(new byte[100], bin);
             System.out.println("Received in response to SCHD: " + serverReply);
-            bout.write(REDY.getBytes());
+            bout.write("REDY".getBytes());
             bout.flush();
             serverReply = csj.readMsg(new byte[32], bin);
             System.out.println("Received in response to REDY: " + serverReply);
@@ -96,6 +93,7 @@ public class MyCientScheduleJob {
                 dout.close();
                 s.close();
             }
+            */
         }catch(Exception e) {
             System.out.println(e);
         }
