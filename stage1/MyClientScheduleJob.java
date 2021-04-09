@@ -4,7 +4,7 @@ import java.io.*;
 
 
 
-public class MyCientScheduleJob {
+public class MyClientScheduleJob {
     public static String QUIT = "QUIT";
     public static char[] HI = {'H', 'E','L', 'O'};
     public int coreCount = -1;
@@ -28,7 +28,7 @@ public class MyCientScheduleJob {
             BufferedOutputStream bout = new BufferedOutputStream(dout);
             System.out.println("Connected with the server");
 
-            MyCientScheduleJob csj = new MyCientScheduleJob();
+            MyClientScheduleJob csj = new MyClientScheduleJob();
 
 	    //Send HELO and reponse
             bout.write("HELO".getBytes());
