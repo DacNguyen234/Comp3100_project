@@ -9,7 +9,7 @@ public class MyClient {
     /* Declare and initialise the strings (messages) that
     will send to the server */
     public static String HELO = "HELO";
-    public static String AUTH = "AUTH huucuong";
+    public static String AUTH = "AUTH " + System.getProperty("user.name");
     public static String REDY = "REDY";
     public static String OK = "OK";
     public static String GETSALL = "GETS All";
