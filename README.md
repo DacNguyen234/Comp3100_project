@@ -1,7 +1,9 @@
-1. The Final .java file for Stage1 is stored in FINAL folder
-2. copy all necessary files into folder (e.g test files)
+The Final .java file for Stage1 is stored in FINAL folder
+
+copy all necessary files into folder (e.g test files)
 ## How to run a Stage1
 `make all ...`
+
 `make clean`
 
 ## Report Link
