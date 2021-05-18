@@ -1,3 +1,7 @@
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.InputStreamReader;
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException ;
@@ -19,10 +23,8 @@ public class MyClient {
     private static final String DSSystem_xml_file = "ds-system.xml";
     private static final String SPACE = " ";
     private static Socket socket;
-    private static DataInputStream  fi;
-    private static DataOutputStream fo;
 
-    private static void handshake(DataInputStream fi, DataOutputStream fo){
+    private static void handshake(BufferedReader fi, BufferedOutputStream fo){
         try {
             fo.write(HELO.getBytes());
             String reply = fi.readLine();
@@ -34,11 +36,12 @@ public class MyClient {
             Logger.getLogger(MyClient.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    /*
 
     private static List<Server> parseDSSystem_xml_file(String fielAddress){
         List<Server> dsServerList = new ArrayList<>();
         return dsServerList;
-    }
+    }*/
 
     private static List<String> parseJOBNMessage(String ServerReply){
         List<String> info = new ArrayList<>();
@@ -59,10 +62,12 @@ public class MyClient {
     public static void main(String[] args){
         try {
             socket = new Socket(ADDRESS, PORT);
-            fi = new DataInputStream(socket.getInputStream());
-            fo = new DataOutputStream(socket.getOutputStream());
+            DataInputStream in = new DataInputStream(socket.getInputStream());
+            DataOutputStream ou = new DataOutputStream(socket.getOutputStream());
+            BufferedReader fi = new BufferedReader(new InputStreamReader(in));//Use BufferedReader as suggested by the doc instead of DataInputStream
+            BufferedOutputStream fo = new BufferedOutputStream (ou);
             handshake(fi, fo);
-            List<Server> dsServers = parseDSSystem_xml_file(ADDRESS);
+            //List<Server> dsServers = parseDSSystem_xml_file(ADDRESS);
 
             fo.write(REDY.getBytes());
             String reply = fi.readLine();
@@ -93,7 +98,7 @@ public class MyClient {
             }
         } catch(IOException ex){
             Logger.getLogger(MyClient.class.getName()).log(Level.SEVERE, null, ex);
-            parseDSSystem_xml_file(ADDRESS);
+            //parseDSSystem_xml_file(ADDRESS);
         }
     }
 }
