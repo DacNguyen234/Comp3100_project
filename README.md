@@ -6,9 +6,6 @@ copy all necessary files into folder (e.g test files)
 
 `make clean`
 
-## Report Link
-https://docs.google.com/document/d/1Pj1iP13A2SU3ama2_NGRJ2aCSSYgoK-aY7f959qMm5I/edit
-
 ---
 
 ## Overview
