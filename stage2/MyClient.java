@@ -102,49 +102,74 @@ public class MyClient {
                     //parseServer and store it in Server Class.
                     List<Server> serverList = parseServer(JOBNSplit);
                     //sort in accesnding order
-                    if (args[0].equals("bf")){
+                    if (args[0].equals("ff")){
                         Collections.sort(serverList, new Comparator<Server>() {
                             @Override
                             public int compare(Server a, Server b) {
                                 return a.getServerCore() - b.getServerCore();
                             }
                         });
-                    }
-                    //sort in desending order 
-                    else if (args[0].equals("atl")) {
-                        Collections.sort(serverList, new Comparator<Server>() {
-                            @Override
-                            public int compare(Server a, Server b) {
-                                return b.getServerCore() - a.getServerCore();
-                            }
-                        });
-                    }
-
-                    boolean is_signed = false;
-                    //find the first and best available server
-                    for (Server sver:serverList) {
-                        if (sver.getIsRunning()==0 && sver.getServerCore()>=Integer.parseInt(info.get(2))) {
-                            bout.write(createSCHDString(jobID, sver.getServerType(), sver.getTypeCount()).getBytes());
-                            bout.flush();
-                            is_signed=true;
-                            break;
-                        }
-                    }
-                    //if all others busy and un available then assign to the best one.
-                    if (is_signed==false){
+                        boolean is_signed = false;
+                        //find the first and best available server
                         for (Server sver:serverList) {
-                            if (sver.getServerCore()>=Integer.parseInt(info.get(2))) {
+                            if (sver.getIsRunning()==0 && sver.getServerCore()>=Integer.parseInt(info.get(2))) {
                                 bout.write(createSCHDString(jobID, sver.getServerType(), sver.getTypeCount()).getBytes());
                                 bout.flush();
                                 is_signed=true;
                                 break;
                             }
                         }
+                        //if all others busy and un available then assign to the best one.
+                        if (is_signed==false){
+                            for (Server sver:serverList) {
+                                if (sver.getServerCore()>=Integer.parseInt(info.get(2))) {
+                                    bout.write(createSCHDString(jobID, sver.getServerType(), sver.getTypeCount()).getBytes());
+                                    bout.flush();
+                                    is_signed=true;
+                                    break;
+                                }
+                            }
+                        }
+                        //if others fail to assign, then assigned to the first server find.
+                        if (is_signed==false) {
+                            bout.write(createSCHDString(jobID, serverList.get(0).getServerType(), serverList.get(0).getTypeCount()).getBytes());
+                            bout.flush();
+                        }
                     }
-                    //if others fail to assign, then assigned to the first server find.
-                    if (is_signed==false) {
-                        bout.write(createSCHDString(jobID, serverList.get(0).getServerType(), serverList.get(0).getTypeCount()).getBytes());
-                        bout.flush();
+                    //sort in desending order 
+                    else if (args[0].equals("wf")) {
+                        Collections.sort(serverList, new Comparator<Server>() {
+                            @Override
+                            public int compare(Server a, Server b) {
+                                return b.getServerCore() - a.getServerCore();
+                            }
+                        });
+                        boolean is_signed = false;
+                        //find the first and best available server
+                        for (Server sver:serverList) {
+                            if (sver.getIsRunning()==0 && sver.getServerCore()>=Integer.parseInt(info.get(2))) {
+                                bout.write(createSCHDString(jobID, sver.getServerType(), sver.getTypeCount()).getBytes());
+                                bout.flush();
+                                is_signed=true;
+                                break;
+                            }
+                        }
+                        //if all others busy and un available then assign to the best one.
+                        if (is_signed==false){
+                            for (Server sver:serverList) {
+                                if (sver.getServerCore()>=Integer.parseInt(info.get(2))) {
+                                    bout.write(createSCHDString(jobID, sver.getServerType(), sver.getTypeCount()).getBytes());
+                                    bout.flush();
+                                    is_signed=true;
+                                    break;
+                                }
+                            }
+                        }
+                        //if others fail to assign, then assigned to the first server find.
+                        if (is_signed==false) {
+                            bout.write(createSCHDString(jobID, serverList.get(0).getServerType(), serverList.get(0).getTypeCount()).getBytes());
+                            bout.flush();
+                        }
                     }
                     mc.readMsg(2, bin);
                     bout.write("OK".getBytes());
